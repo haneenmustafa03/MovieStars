@@ -7,9 +7,24 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="dist/styles.css" rel="stylesheet">
-  <title>Tailwind Test</title>
+  <title>Movie Matcher!</title>
 </head>
-<body class="bg-gray-100 p-6">
-  <h1 class="text-3xl text-center text-blue-600">Hello, Tailwind CSS!</h1>
+<body class="bg-gray-100 flex flex-col items-center justify-center min-h-screen">
+  <!--Welcome Message-->
+  <h1 class="text-4xl font-bold text-blue-600 mb-6">Welcome to Movie Matcher</h1>
+
+  <!--Buttons-->
+  <div class="space-y-4">
+    <button
+    id="suggestions-btn" 
+    class="px-6 py-3 bg-blue-500 text-white rounded-lg shadow-lg hover:bg-blue-600">
+    Find Movie Suggestions
+    </button>
+    <button 
+    id="profile-btn" 
+    class="px-6 py-3 bg-green-500 text-white rounded-lg shadow-lg hover:bg-green-600">
+    Match with a Pseudo Profile
+  </button>
+  </div>
 </body>
 </html>
