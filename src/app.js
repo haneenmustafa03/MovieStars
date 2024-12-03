@@ -10,10 +10,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const findSuggestionsBtn = document.getElementById('find-suggestions-btn');
   const returnBtn = document.getElementById('return-btn');
 
-  //Event listeners listening for button clicks and checks
-  document.getElementById('suggestions-btn').addEventListener('click', () => { //if find movie suggestions button is clicked
+  //Common function for fetching genome tags and rendering checkboxes
+  const fetchGenomeTags = () => {
     fetch('http://127.0.0.1:5000/get_genome_tags') //using flask, fetch data from backend
-      .then(response => response.json()) //Used for jso formatting
+      .then(response => response.json()) //Used for json formatting
       .then(genomeTags => {
         const tagsContainer = document.getElementById('tags-container'); //selects genome tag container
         tagsContainer.innerHTML = ''; //make sure tag container is empty
@@ -60,7 +60,12 @@ document.addEventListener('DOMContentLoaded', () => {
         genomeTagsScreen.style.display = 'block';
       })
       .catch(err => console.error('Error fetching genome tags:', err));
-  });
+  };
+
+  //Event listeners listening for button clicks and checks
+  document.getElementById('find-hashmap-btn').addEventListener('click', fetchGenomeTags); //if find movie suggestions button is clicked
+  document.getElementById('find-sortedmap-btn').addEventListener('click', fetchGenomeTags); //same exact thing as find-hashmap-btn but this one is for sorted map
+
   //once user has selected their tags click find suggestions and js will listen for the click
   findSuggestionsBtn.addEventListener('click', () => {
     const selectedTags = [];

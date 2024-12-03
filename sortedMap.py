@@ -9,4 +9,4 @@ class SortedMap:
         if key in self.hashmap:
             del self.hashmap[key] #delete key-value pair
     def items(self):
-        return sorted(self.hashmap.items()) #return all key-value pairs
+        return sorted(self.hashmap.items())

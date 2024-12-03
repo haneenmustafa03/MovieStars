@@ -114,11 +114,19 @@ def find_movie_suggestions_sorted_map(selected_tags, genome_scores, movies_and_g
         })
 
     return movie_details
+    
 @app.route('/suggest_movies', methods=['POST']) #/suggest_movies is the path where the app will respond to requests, post means we expect data
 def suggest_movies():
     data = request.json #converts data to json format
     selected_tags = data.get('selected_tags', []) #pulls the selected tags from request
     results = find_movie_suggestions(selected_tags, genome_scores, movies_and_genres, genome_tags)
+    return jsonify(results)
+
+@app.route('/suggest_movies_sorted', methods=['POST']) #used for sorted map
+def suggest_movies_sorted():
+    data = request.json
+    selected_tags = data.get('selected_tags', [])
+    results = find_movie_suggestions_sorted_map(selected_tags, genome_scores, movies_and_genres, genome_tags)
     return jsonify(results)
 
 @app.route('/get_genome_tags', methods =['GET'])
