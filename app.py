@@ -3,6 +3,7 @@ from flask_cors import CORS #using cors in case we run into cross origin issues 
 import random #to suggest 200 random genomes
 import csv #to read files
 from hashMap import HashMap #import hash map class
+from sortedMap import SortedMap #import sorted map class
 app = Flask(__name__) #initializes appication instance 
 CORS(app)#add cors here, remove once app is actually launched
 
@@ -83,6 +84,36 @@ def find_movie_suggestions(selected_tags, genome_scores, movies_and_genres, geno
 
     return movie_details
 
+def find_movie_suggestions_sorted_map(selected_tags, genome_scores, movies_and_genres, genome_tags):
+    movie_relevance = SortedMap()
+    
+    for tag in selected_tags:
+        tagId = None
+        for id, name in genome_tags.items():
+            if tag == name:
+                tagId = id
+                break
+
+        for movieId in genome_scores:
+            sum_score = movie_relevance.get(movieId, 0) + genome_scores[movieId][tagId]
+            movie_relevance.insert(movieId, sum_score)
+
+    sorted_movies = movie_relevance.items() #sorted by key(movieID) automatically
+    #sort by relevance score
+    sorted_movies = sorted(movie_relevance.items(), key=lambda x: x[1], reverse=True)
+    
+    top_5_movies = sorted_movies[:5]
+
+    movie_details = []
+    for movie_id, score in top_5_movies:
+        movie = movies_and_genres.get(movie_id, {})
+        movie_details.append({
+            'title': movie['title'],
+            'genres': movie['genres'],
+            'relevance': score
+        })
+
+    return movie_details
 @app.route('/suggest_movies', methods=['POST']) #/suggest_movies is the path where the app will respond to requests, post means we expect data
 def suggest_movies():
     data = request.json #converts data to json format
