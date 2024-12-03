@@ -61,4 +61,58 @@ document.addEventListener('DOMContentLoaded', () => {
       })
       .catch(err => console.error('Error fetching genome tags:', err));
   });
+  //once user has selected their tags click find suggestions and js will listen for the click
+  findSuggestionsBtn.addEventListener('click', () => {
+    const selectedTags = [];
+    document.querySelectorAll('#tags-container input:checked').forEach(checkbox => {
+      selectedTags.push(checkbox.value); //adds checked values to an array
+    });
+
+    fetch('http://127.0.0.1:5000/suggest_movies', { //send request to backend so the movie suggestions are returned
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ selected_tags: selectedTags })
+    })
+      .then(response => response.json())
+      .then(movies => {
+        const suggestionsContainer = document.getElementById('suggestions-container'); //here we select suggestions container
+        suggestionsContainer.innerHTML = ''; //clears/ensures its empty
+
+        movies.forEach(movie => {
+          const movieDiv = document.createElement('div'); //div elemenet for the movie
+          movieDiv.classList.add('p-4', 'border', 'rounded', 'shadow', 'bg-white', 'space-y-2'); //tailwind :))
+
+          const title = document.createElement('h3'); //h3 element for title
+          title.textContent = movie.title;
+          title.classList.add('text-lg', 'font-bold', 'text-gray-800'); //tailwind :)))
+
+          const genres = document.createElement('p'); //p eleement for genres
+          genres.textContent = `Genres: ${movie.genres.join(', ')}`;
+          genres.classList.add('text-sm', 'text-gray-600'); //tailwind :))
+
+          const relevance = document.createElement('p'); //p element for the relevance
+          relevance.textContent = `Relevance: ${movie.relevance.toFixed(2)}`;
+          relevance.classList.add('text-sm', 'text-gray-500'); //tailwind
+
+          //add elements to the movie div
+          movieDiv.appendChild(title);
+          movieDiv.appendChild(genres);
+          movieDiv.appendChild(relevance);
+
+          suggestionsContainer.appendChild(movieDiv); //moviediv goes to the suggestions container
+        });
+
+        genomeTagsScreen.style.display = 'none'; //hides genome display screen and...
+        suggestionsScreen.style.display = 'block'; //switches to movie suggestions screen
+      })
+      .catch(err => console.error('Error fetching movie suggestions:', err)); //catch errors when fetching suggestions
+  });
+
+  //listens for a click to return to main menu
+  returnBtn.addEventListener('click', () => {
+    suggestionsScreen.style.display = 'none';
+    mainScreen.style.display = 'block';
+  });
 });
