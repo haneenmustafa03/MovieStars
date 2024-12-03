@@ -4,16 +4,19 @@ import random #to suggest 200 random genomes
 import csv #to read files
 
 app = Flask(__name__) #initializes appication instance 
-CORS(app) #add cors here, remove once app is actually launched
+CORS(app)#add cors here, remove once app is actually launched
 
-#Our first data structure we are using is hashmaps
+'''Note: initial thorough comment are for myself to refer to when reading in
+the data from the other files, just so I follow the same process for the other
+files, please disregard them'''
+
+#Hashmap data structure
 def load_genome_tags():
     genome_tags = {} #here we will store the genome tagId mapped to the genome value
     with open('data/genome_tags.csv', 'r') as file: #auto opens and closes file, r stands for read mode
         reader = csv.DictReader(file) #reader is an iterator that we will use to read in each line
         for row in reader: #going line by line in the code and parsing the data into hashmap
             genome_tags[int(row['tagId'])] = row["tag"] #convert the key value to an int here and set it to the tag
-
 
         return genome_tags #this will return the tagIds and values for use later
 
@@ -44,6 +47,7 @@ def load_movies():
             movies[movieId] = {'title' : title, 'genres' : genres}
     return movies
 
+#will return top five genomes with highest relevancy scores
 def find_movie_suggestions(selected_tags, genome_scores, movies_and_genres, genome_tags):
     movie_relevance = {}
 
@@ -77,12 +81,17 @@ def find_movie_suggestions(selected_tags, genome_scores, movies_and_genres, geno
 
     return movie_details
 
-@app.route('/suggest_movies', methods=['POST']) #/sugges_movies is the path where the app will respond to requests, post means we expect data
+@app.route('/suggest_movies', methods=['POST']) #/suggest_movies is the path where the app will respond to requests, post means we expect data
 def suggest_movies():
     data = request.json #converts data to json format
     selected_tags = data.get('selected_tags', []) #pulls the selected tags from request
     results = find_movie_suggestions(selected_tags, genome_scores, movies_and_genres, genome_tags)
     return jsonify(results)
+
+@app.route('/get_genome_tags', methods =['GET'])
+def get_genome_tags():
+    random_genomes = random.sample(list(genome_tags.values()), 200)
+    return jsonify(random_genomes)
 
 
 genome_tags = load_genome_tags()
