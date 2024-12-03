@@ -2,7 +2,7 @@ from flask import Flask, jsonify, request #flask will be used to create the web 
 from flask_cors import CORS #using cors in case we run into cross origin issues using live server for testing
 import random #to suggest 200 random genomes
 import csv #to read files
-
+from hashMap import HashMap #import hash map class
 app = Flask(__name__) #initializes appication instance 
 CORS(app)#add cors here, remove once app is actually launched
 
@@ -48,8 +48,8 @@ def load_movies():
     return movies
 
 #will return top five genomes with highest relevancy scores
-def find_movie_suggestions(selected_tags, genome_scores, movies_and_genres, genome_tags):
-    movie_relevance = {}
+def find_movie_suggestions(selected_tags, genome_scores, movies_and_genres, genome_tags): #later should change function signature to indicate its with hashmap
+    movie_relevance = HashMap()
 
     #iterate over all of the user selected genomes
     for tag in selected_tags:
@@ -62,7 +62,9 @@ def find_movie_suggestions(selected_tags, genome_scores, movies_and_genres, geno
     #pick up right here, somehow add up relevance factors and return top five movies
         for movieId in genome_scores:
             #adding up the relevance factors for all of the 
-            movie_relevance[movieId] = movie_relevance.get(movieId, 0) + genome_scores[movieId][tagId]
+            sum_score = movie_relevance.get(movieId, 0) + genome_scores[movieId][tagId]
+            movie_relevance.insert(movieId, sum_score)
+            #movie_relevance[movieId] = movie_relevance.get(movieId, 0) + genome_scores[movieId][tagId]
     
     #sort movie relevance factors in order to get the top five
     sorted_movies = sorted(movie_relevance.items(), key=lambda x: x[1], reverse=True) #the lambda just means sort the relevance values in the hashmap
