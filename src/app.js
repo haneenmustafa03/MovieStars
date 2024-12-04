@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
   /*NOTE: Alot of these comments are for myself because I haven't used javascript in a long time and 
   wanted to mark down what each function is doing to help engrave them in my mind, please disregard
   the redundant comments*/
-  
+
   //IDs to be used in the html (must use all of them otherwise error)
   const mainScreen = document.getElementById('main-screen');
   const genomeTagsScreen = document.getElementById('genome-tags-screen');
@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
           const label = document.createElement('label'); //label for the element above
           label.htmlFor = tag;
           label.textContent = tag;
-          label.classList.add('text-sm', 'font-medium', 'text-gray-700'); //tailwind :))
+          label.classList.add('text-sm', 'font-medium', 'text-white'); //tailwind :))
 
           //wrapper for grouping and label
           const wrapper = document.createElement('div');
@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Display the execution time
         const executionTimeDiv = document.createElement('div'); //div element for the execution time
         executionTimeDiv.textContent = `Execution Time: ${data.execution_time.toFixed(4)} seconds`;
-        executionTimeDiv.classList.add('text-sm', 'text-gray-500', 'mt-4'); //I also don't know if this is the right gray
+        executionTimeDiv.classList.add('text-sm', 'text-white', 'mt-4'); //I also don't know if this is the right gray
         suggestionsContainer.appendChild(executionTimeDiv); //add to suggestions container
 
         genomeTagsScreen.style.display = 'none'; //hides genome display screen and...
@@ -127,3 +127,4 @@ document.addEventListener('DOMContentLoaded', () => {
     mainScreen.style.display = 'block';
   });
 });
+

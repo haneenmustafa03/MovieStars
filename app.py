@@ -49,40 +49,60 @@ def load_movies():
     return movies
 
 #will return top five genomes with highest relevancy scores
-def find_movie_suggestions(selected_tags, genome_scores, movies_and_genres, genome_tags): #later should change function signature to indicate its with hashmap
+def find_movie_suggestions(selected_tags, genome_scores, movies_and_genres, genome_tags):  
     movie_relevance = HashMap()
 
-    #iterate over all of the user selected genomes
+    #iterate over all of the user-selected genome tags
     for tag in selected_tags:
         tagId = None
-        for id, name in genome_tags.items(): #find the id number associated with the genome
+        for id, name in genome_tags.items():  # find the id number associated with the genome
             if tag == name:
                 tagId = id
                 break
 
-    #pick up right here, somehow add up relevance factors and return top five movies
+        #pick up right here, somehow add up relevance factors and return top five movies
         for movieId in genome_scores:
             #adding up the relevance factors for all of the 
             sum_score = movie_relevance.get(movieId, 0) + genome_scores[movieId][tagId]
             movie_relevance.insert(movieId, sum_score)
-            #movie_relevance[movieId] = movie_relevance.get(movieId, 0) + genome_scores[movieId][tagId]
-    
-    #sort movie relevance factors in order to get the top five
-    sorted_movies = sorted(movie_relevance.items(), key=lambda x: x[1], reverse=True) #the lambda just means sort the relevance values in the hashmap
 
-    top_5_movies = sorted_movies[:5]
+    #find the top 5 movies manually bc unsorted
+    top_5_movies = []  #stores (movieId, score) pairs
+
+    for movieId in movie_relevance.keys():
+        score = movie_relevance.get(movieId)
+
+        # iftop_5_movies has fewer than 5 entries, add the current movie
+        if len(top_5_movies) < 5:
+            top_5_movies.append((movieId, score))
+        else:
+            #find the movie with the lowest score in the top 5
+            min_index = 0
+            min_score = top_5_movies[0][1]
+            for i in range(1, len(top_5_movies)):
+                if top_5_movies[i][1] < min_score:
+                    min_index = i
+                    min_score = top_5_movies[i][1]
+
+            #replace the lowest scoring movie if the current score is higher
+            if score > min_score:
+                top_5_movies[min_index] = (movieId, score)
+
+    #sort the top 5 movies by score in descending order
+    top_5_movies = sorted(top_5_movies, key=lambda x: x[1], reverse=True)
 
     #Get the movie details and genres to return to the user
     movie_details = []
     for movie_id, score in top_5_movies:
         movie = movies_and_genres.get(movie_id, {})
         movie_details.append({
-            'title': movie['title'],
-            'genres': movie['genres'],
+            'title': movie.get('title', 'Unknown'),
+            'genres': movie.get('genres', []),
             'relevance': score
         })
 
     return movie_details
+
 
 def find_movie_suggestions_sorted_map(selected_tags, genome_scores, movies_and_genres, genome_tags):
     movie_relevance = SortedMap()
@@ -144,7 +164,7 @@ def suggest_movies_sorted():
 
 @app.route('/get_genome_tags', methods =['GET'])
 def get_genome_tags():
-    random_genomes = random.sample(list(genome_tags.values()), 200)
+    random_genomes =list(genome_tags.values())
     return jsonify(random_genomes)
 
 
