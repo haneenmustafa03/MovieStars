@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Display the execution time
         const executionTimeDiv = document.createElement('div'); //div element for the execution time
         executionTimeDiv.textContent = `Execution Time: ${data.execution_time.toFixed(4)} seconds`;
-        executionTimeDiv.classList.add('text-sm', 'text-gray-500', 'mt-4'); //I also don't know if this is the right gray
+        executionTimeDiv.classList.add('text-sm', 'text-white', 'mt-4'); //I also don't know if this is the right gray
         suggestionsContainer.appendChild(executionTimeDiv); //add to suggestions container
 
         genomeTagsScreen.style.display = 'none'; //hides genome display screen and...
@@ -158,7 +158,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const label = document.createElement('label');
       label.htmlFor = tag;
       label.textContent = tag;
-      label.classList.add('text-sm', 'font-medium', 'text-gray-700');
+      label.classList.add('text-sm', 'font-medium', 'text-white');
       
       const wrapper = document.createElement('div');
       wrapper.classList.add('flex', 'items-center', 'space-x-2');

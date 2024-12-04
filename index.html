@@ -6,6 +6,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@latest/dist/tailwind.min.css" rel="stylesheet">
   <title>Movie Matcher!</title>
+  <style>
+    /* Set the particles background only on the main screen */
+    #main-screen {
+      position: relative;
+      z-index: 10;
+    }
+
+    #particles-js {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1; /* Puts particles behind the main content */
+    }
+  </style>
 </head>
 <body class="bg-gradient-to-r from-blue-500 to-purple-600 flex flex-col items-center justify-center min-h-screen">
   <!-- Main Screen -->
@@ -27,7 +43,7 @@
   <div id="genome-tags-screen" style="display: none;">
     <input type="text" id="search-bar" placeholder="Search for a genome..." class="px-4 py-2 rounded-lg border mb-4 w-full max-w-md">
 
-    <h2 class="text-3xl font-semibold text-blue-500 mb-4">Select Up to 10 Genome Tags</h2>
+    <h2 class="text-3xl font-semibold text-white mb-4">Select Up to 10 Genome Tags</h2>
     <div id="tags-container" class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4"></div>
     <button id="find-suggestions-btn" class="px-6 py-3 bg-purple-500 text-white rounded-lg shadow-lg hover:bg-purple-600">
       Find Suggestions
@@ -36,13 +52,13 @@
 
   <!-- Suggestions Screen -->
   <div id="suggestions-screen" style="display: none;">
-    <h2 class="text-3xl font-semibold text-blue-500 mb-4">Top Movie Suggestions</h2>
+    <h2 class="text-3xl font-semibold text-white mb-4">Top Movie Suggestions</h2>
     <div id="suggestions-container" class="space-y-4"></div>
     <button id="return-btn" class="px-6 py-3 bg-gray-500 text-white rounded-lg shadow-lg hover:bg-gray-600">
       Return to Main Menu
     </button>
   </div>
-  <div id="particles-js" class="absolute top-0 left-0 w-full h-full"></div>
+  <div id="particles-js"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
   <script>
@@ -82,7 +98,6 @@ particlesJS('particles-js', {
   }
 });
 
-  </script>
   </script>
     
   <script src="src/app.js"></script>
