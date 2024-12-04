@@ -10,3 +10,5 @@ class HashMap:
             del self.hashmap[key] #delete key-value pair
     def items(self):
         return self.hashmap.items() #return all key-value pairs
+    def keys(self):
+        return self.hashmap.keys()
