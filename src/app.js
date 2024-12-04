@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
           const label = document.createElement('label'); //label for the element above
           label.htmlFor = tag;
           label.textContent = tag;
-          label.classList.add('text-sm', 'font-medium', 'text-gray-700'); //tailwind :))
+          label.classList.add('text-sm', 'font-medium', 'text-white'); //tailwind :))
 
           //wrapper for grouping and label
           const wrapper = document.createElement('div');
