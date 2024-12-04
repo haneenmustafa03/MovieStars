@@ -121,7 +121,7 @@ def suggest_movies():
     selected_tags = data.get('selected_tags', []) #pulls the selected tags from request
     start_time = time.perf_counter() #get the start time
     results = find_movie_suggestions(selected_tags, genome_scores, movies_and_genres, genome_tags)
-    end_time = time.perf_counter #get the end time
+    end_time = time.perf_counter() #get the end time
     execution_time = end_time - start_time #calculate execution time
     return jsonify({
         'movies': results,
@@ -134,7 +134,7 @@ def suggest_movies_sorted():
     selected_tags = data.get('selected_tags', [])
     start_time = time.perf_counter() #get the start time
     results = find_movie_suggestions_sorted_map(selected_tags, genome_scores, movies_and_genres, genome_tags)
-    end_time = time.perf_counter #get the end time
+    end_time = time.perf_counter() #get the end time
     execution_time = end_time - start_time #calculate execution time
     
     return jsonify({

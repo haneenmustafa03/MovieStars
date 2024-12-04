@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
       body: JSON.stringify({ selected_tags: selectedTags })
     })
       .then(response => response.json())
-      .then(movies => {
+      .then(data => {
         const suggestionsContainer = document.getElementById('suggestions-container'); //here we select suggestions container
         suggestionsContainer.innerHTML = ''; //clears/ensures its empty
         //not sure if I had to add data before movies because of how i modified the jsonify result
