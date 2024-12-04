@@ -6,7 +6,7 @@ from hashMap import HashMap #import hash map class
 from sortedMap import SortedMap #import sorted map class
 app = Flask(__name__) #initializes appication instance 
 CORS(app)#add cors here, remove once app is actually launched
-
+import time #import timer
 '''Note: initial thorough comment are for myself to refer to when reading in
 the data from the other files, just so I follow the same process for the other
 files, please disregard them'''
@@ -119,15 +119,28 @@ def find_movie_suggestions_sorted_map(selected_tags, genome_scores, movies_and_g
 def suggest_movies():
     data = request.json #converts data to json format
     selected_tags = data.get('selected_tags', []) #pulls the selected tags from request
+    start_time = time.perf_counter() #get the start time
     results = find_movie_suggestions(selected_tags, genome_scores, movies_and_genres, genome_tags)
-    return jsonify(results)
+    end_time = time.perf_counter #get the end time
+    execution_time = end_time - start_time #calculate execution time
+    return jsonify({
+        'movies': results,
+        'execution_time': execution_time
+    })
 
 @app.route('/suggest_movies_sorted', methods=['POST']) #used for sorted map
 def suggest_movies_sorted():
     data = request.json
     selected_tags = data.get('selected_tags', [])
+    start_time = time.perf_counter() #get the start time
     results = find_movie_suggestions_sorted_map(selected_tags, genome_scores, movies_and_genres, genome_tags)
-    return jsonify(results)
+    end_time = time.perf_counter #get the end time
+    execution_time = end_time - start_time #calculate execution time
+    
+    return jsonify({
+        'movies': results,
+        'execution_time': execution_time
+    })
 
 @app.route('/get_genome_tags', methods =['GET'])
 def get_genome_tags():

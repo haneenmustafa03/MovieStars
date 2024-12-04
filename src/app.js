@@ -84,8 +84,9 @@ document.addEventListener('DOMContentLoaded', () => {
       .then(movies => {
         const suggestionsContainer = document.getElementById('suggestions-container'); //here we select suggestions container
         suggestionsContainer.innerHTML = ''; //clears/ensures its empty
-
-        movies.forEach(movie => {
+        //not sure if I had to add data before movies because of how i modified the jsonify result
+        //easy removal if it isn't needed
+        data.movies.forEach(movie => {
           const movieDiv = document.createElement('div'); //div elemenet for the movie
           movieDiv.classList.add('p-4', 'border', 'rounded', 'shadow', 'bg-white', 'space-y-2'); //tailwind :))
 
@@ -108,6 +109,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
           suggestionsContainer.appendChild(movieDiv); //moviediv goes to the suggestions container
         });
+        // Display the execution time
+        const executionTimeDiv = document.createElement('div'); //div element for the execution time
+        executionTimeDiv.textContent = `Execution Time: ${data.execution_time.toFixed(4)} seconds`;
+        executionTimeDiv.classList.add('text-sm', 'text-gray-500', 'mt-4'); //I also don't know if this is the right gray
+        suggestionsContainer.appendChild(executionTimeDiv); //add to suggestions container
 
         genomeTagsScreen.style.display = 'none'; //hides genome display screen and...
         suggestionsScreen.style.display = 'block'; //switches to movie suggestions screen
