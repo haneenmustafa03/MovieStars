@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
   /*NOTE: Alot of these comments are for myself because I haven't used javascript in a long time and 
   wanted to mark down what each function is doing to help engrave them in my mind, please disregard
   the redundant comments*/
-  
+
   //IDs to be used in the html (must use all of them otherwise error)
   const mainScreen = document.getElementById('main-screen');
   const genomeTagsScreen = document.getElementById('genome-tags-screen');
@@ -126,4 +126,58 @@ document.addEventListener('DOMContentLoaded', () => {
     suggestionsScreen.style.display = 'none';
     mainScreen.style.display = 'block';
   });
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+  const searchBar = document.getElementById('search-bar');
+  const tagsContainer = document.getElementById('tags-container');
+  let genomeTags = []; // to hold all genome tags fetched from the backend
+
+  // Fetch genome tags
+  const fetchGenomeTags = () => {
+    fetch('http://127.0.0.1:5000/get_genome_tags') // Fetch data from backend
+      .then(response => response.json())
+      .then(data => {
+        genomeTags = data; // Store genome tags
+        renderTags(genomeTags); // Render all tags initially
+      })
+      .catch(err => console.error('Error fetching genome tags:', err));
+  };
+
+  // Render tags based on the given list of tags
+  const renderTags = (tags) => {
+    tagsContainer.innerHTML = ''; // Clear existing tags
+
+    tags.forEach(tag => {
+      const checkbox = document.createElement('input');
+      checkbox.type = 'checkbox';
+      checkbox.id = tag;
+      checkbox.value = tag;
+      checkbox.classList.add('mr-2', 'w-4', 'h-4');
+      
+      const label = document.createElement('label');
+      label.htmlFor = tag;
+      label.textContent = tag;
+      label.classList.add('text-sm', 'font-medium', 'text-gray-700');
+      
+      const wrapper = document.createElement('div');
+      wrapper.classList.add('flex', 'items-center', 'space-x-2');
+      wrapper.appendChild(checkbox);
+      wrapper.appendChild(label);
+
+      tagsContainer.appendChild(wrapper);
+    });
+  };
+
+  // Listen for typing in the search bar to filter tags
+  searchBar.addEventListener('input', () => {
+    const query = searchBar.value.toLowerCase(); // Get the search query
+    const filteredTags = genomeTags.filter(tag => 
+      tag.toLowerCase().includes(query) // Check if tag matches query
+    );
+    renderTags(filteredTags); // Render filtered tags
+  });
+
+  // Fetch genome tags when the page loads
+  fetchGenomeTags();
 });
