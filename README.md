@@ -23,6 +23,6 @@ How to run:
 
 -To access the application, in your web browser navigate to: http://127.0.0.1:5500/ (you can also use live server in vscode to open the page)
 
--Find a movie to watch based on the 1200 genomes available for you to choose from!
+-Find a movie to watch based on the 200 genomes available for you to choose from!
 
 
